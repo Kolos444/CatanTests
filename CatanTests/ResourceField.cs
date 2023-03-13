@@ -2,14 +2,21 @@
 
 namespace catan;
 
-class Feld{
+public class Connection{
+	public bool Road   { get; set; }
+	public int  Player { get; set; }
+
+}
+
+public class ResourceField{
 	public Resource Resource { get; set; }
 	public int      Value    { get; set; }
 
-	public Feld(Resource resource, int value) {
+	public ResourceField(Resource resource, int value) {
 		Resource = resource;
 		Value    = value;
 	}
+
 }
 
 public enum Resource{
