@@ -54,6 +54,10 @@ public class Board{
 
 		for (int y = 0; y < roads.GetLength(1); y++){
 			for (int x = 0; x < roads.GetLength(0); x++){
+				if (x % 4 == 1)
+					ausgabe[x, y] = '/';
+				else if(x % 4 == 3)
+					ausgabe[x, y] = '\\';
 
 			}
 		}
