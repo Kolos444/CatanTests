@@ -43,8 +43,8 @@ public class Tile{
 		ID = id;
 
 		Neighbours = new int[6];
-		Nodes      = Array.Empty<int>();
-		Roads      = Array.Empty<int>();
+		Nodes      = new int[6];
+		Roads      = new int[6];
 	}
 
 	public int ID { get; }
