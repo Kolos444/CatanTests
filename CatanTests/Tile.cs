@@ -40,7 +40,7 @@ public class Tile{
 	}
 
 	public Tile(int id) {
-		ID       = id;
+		ID = id;
 
 		Neighbours = new int[6];
 		Nodes      = Array.Empty<int>();
@@ -53,8 +53,30 @@ public class Tile{
 	public int?     Value    { get; }
 	public bool     Harbor   { get; }
 
-
+	/// <summary>
+	/// 0-5
+	/// <para> Oben Rechts </para>
+	/// Rechts
+	/// <para> Unten Rechts </para>
+	/// Unten Links
+	/// <para> Links </para>
+	/// Oben Links
+	/// </summary>
 	public int[] Neighbours { get; }
-	public int[] Nodes      { get; }
-	public int[] Roads      { get; }
+
+	/// <summary>
+	/// 0 - 5 Oben bis Oben Links
+	/// </summary>
+	public int[] Nodes { get; }
+
+	/// <summary>
+	/// 0-5
+	/// <para> Oben Rechts </para>
+	/// Rechts
+	/// <para> Unten Rechts </para>
+	/// Unten Links
+	/// <para> Links </para>
+	/// Oben Links
+	/// </summary>
+	public int[] Roads { get; }
 }
