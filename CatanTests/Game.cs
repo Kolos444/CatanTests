@@ -8,9 +8,9 @@ public class Game{
 		Height = height;
 
 		Tiles = new Tile[width * height];
-		Nodes = new Node[Width * 2 * Height + Height * 2 ];
+		Nodes = new Node[Width * 2 * Height + Height * 2];
 
-		int test = Width * 2 * Height + Height * 2 ;
+		int test = Width * 2 * Height + Height * 2;
 	}
 
 	public Tile[] Tiles  { get; }
@@ -23,6 +23,9 @@ public class Game{
 		for (int y = 0; y < Height; y++){
 			for (int x = 0; x < Width; x++){
 				Tile tile = new(y * Width + x + 1);
+
+
+				#region Tile generierung
 
 				if (y % 2 == 0){
 					if (y > 0){
@@ -58,19 +61,13 @@ public class Game{
 					}
 				}
 
+				#endregion
 
-				//Node generierung
+
+				#region Node generierung
 
 				//Wenn es ein Gerade Reihe ist
 				if (y % 2 == 0){
-					Node nodeNorth = new Node(nodeID++);
-					tile.Nodes[0] = nodeNorth.ID;
-					Node nodeNorthEast = new Node(nodeID++);
-					tile.Nodes[1] = nodeNorthEast.ID;
-
-					Nodes[nodeNorth.ID]     = nodeNorth;
-					Nodes[nodeNorthEast.ID] = nodeNorthEast;
-
 					//Wenn es das erste in der Reihe ist
 					if (x == 0){
 						Node nodeSouthWest = new Node(nodeID++);
@@ -78,18 +75,63 @@ public class Game{
 						Node nodeNorthWest = new Node(nodeID++);
 						tile.Nodes[5] = nodeNorthWest.ID;
 
+						nodeSouthWest.Tiles[0] = tile.ID;
+						nodeNorthWest.Tiles[1] = tile.ID;
+
 						Nodes[nodeSouthWest.ID] = nodeSouthWest;
 						Nodes[nodeNorthWest.ID] = nodeNorthWest;
 					}
-				}
-				else{
+
 					Node nodeNorth = new Node(nodeID++);
 					tile.Nodes[0] = nodeNorth.ID;
-					Node nodeNorthWest = new Node(nodeID++);
-					tile.Nodes[5] = nodeNorthWest.ID;
+					Node nodeNorthEast = new Node(nodeID++);
+					tile.Nodes[1] = nodeNorthEast.ID;
+
+					nodeNorth.Tiles[1]     = tile.ID;
+					nodeNorthEast.Tiles[2] = tile.ID;
+
+					if (x > 0){
+						Nodes[Tiles[tile.ID - 2].Nodes[1]].Tiles[1] = tile.ID;
+					}
+
+					if (y > 0){
+						nodeNorthEast.Tiles[0] = Tiles[tile.ID - Width - 1].ID; //Oben
+
+						if (x < Width - 1){
+							nodeNorth.Tiles[0] = Tiles[tile.ID - Width - 1].ID; //Oben Rechts
+						}
+
+						if (x > 0){
+							nodeNorth.Tiles[2] = Tiles[tile.ID - Width - 2].ID; //Oben links
+						}
+					}
 
 					Nodes[nodeNorth.ID]     = nodeNorth;
-					Nodes[nodeNorthWest.ID] = nodeNorthWest;
+					Nodes[nodeNorthEast.ID] = nodeNorthEast;
+				}
+				else{
+
+
+					Node nodeNorthWest = new Node(nodeID++);
+					tile.Nodes[5] = nodeNorthWest.ID;
+					Node nodeNorth = new Node(nodeID++);
+					tile.Nodes[0] = nodeNorth.ID;
+
+
+					nodeNorth.Tiles[1]     = tile.ID; //Unten
+					nodeNorthWest.Tiles[1] = tile.ID; //Unten Links
+
+					if (x > 0){
+						nodeNorthWest.Tiles[2] = tile.ID - 1; //Unten links
+					}
+
+					if (x < Width - 1){
+						nodeNorth.Tiles[0] = Tiles[tile.ID - Width].ID; //Oben rechts
+					}
+
+
+					nodeNorth.Tiles[2]     = Tiles[tile.ID - Width - 1].ID; //Oben links
+					nodeNorthWest.Tiles[0] = Tiles[tile.ID - Width - 1].ID; //Oben
 
 					//Wenn es das Letzte in der Reihe ist
 					if (x == Width - 1){
@@ -98,10 +140,18 @@ public class Game{
 						Node nodeNorthEast = new Node(nodeID++);
 						tile.Nodes[2] = nodeNorthEast.ID;
 
+						nodeSouthEast.Tiles[2] = tile.ID;
+						nodeNorthEast.Tiles[2] = tile.ID;
+
 						Nodes[nodeSouthEast.ID] = nodeSouthEast;
 						Nodes[nodeNorthEast.ID] = nodeNorthEast;
 					}
+
+					Nodes[nodeNorth.ID]     = nodeNorth;
+					Nodes[nodeNorthWest.ID] = nodeNorthWest;
 				}
+
+				#endregion
 
 
 				Tiles[y * Width + x] = tile;

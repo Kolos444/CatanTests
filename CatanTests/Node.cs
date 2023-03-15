@@ -1,7 +1,6 @@
 ﻿namespace CatanTests;
 
 public class Node{
-
 	public Node(int id) {
 		ID = id;
 
@@ -10,10 +9,14 @@ public class Node{
 		Building = BUILDING.None;
 	}
 
+	public int ID { get; }
+
 	public BUILDING Building { get; }
-	public int      ID       { get; }
 
+	/// <summary>
+	/// Von Oben im Uhrzeigersinn 0 - 2
+	/// </summary>
 	public int[] Tiles { get; }
-	public int[] Roads { get; }
 
+	public int[] Roads { get; }
 }
