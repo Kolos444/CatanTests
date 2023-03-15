@@ -17,9 +17,11 @@ public class Game{
 	public int    Width  { get; }
 	public int    Height { get; }
 	public Node[] Nodes  { get; }
+	public Road[] Roads  { get; }
 
 	public void Generate() {
 		int nodeID = 0;
+		int roadID = 0;
 		for (int y = 0; y < Height; y++){
 			for (int x = 0; x < Width; x++){
 				Tile tile = new(y * Width + x + 1);
@@ -110,8 +112,6 @@ public class Game{
 					Nodes[nodeNorthEast.ID] = nodeNorthEast;
 				}
 				else{
-
-
 					Node nodeNorthWest = new Node(nodeID++);
 					tile.Nodes[5] = nodeNorthWest.ID;
 					Node nodeNorth = new Node(nodeID++);
@@ -153,6 +153,54 @@ public class Game{
 
 				#endregion
 
+				#region Straßen generierung
+
+				if (y % 2 == 0){
+					Road roadWest = new Road(roadID++);
+					tile.Roads[4] = roadWest.ID;
+
+					Road roadNorthWest = new Road(roadID++);
+					tile.Roads[5] = roadNorthWest.ID;
+					Road roadNorthEast = new Road(roadID++);
+					tile.Roads[0] = roadNorthEast.ID;
+
+
+					if (x == 0){
+						Road roadSouthWest = new Road(roadID++);
+						tile.Roads[3] = roadSouthWest.ID;
+
+						Nodes[tile.Nodes[4]].Roads[1] = roadSouthWest.ID;
+						Nodes[tile.Nodes[4]].Roads[0] = roadWest.ID;
+
+						Nodes[tile.Nodes[5]].Roads[1] = roadWest.ID;
+						Nodes[tile.Nodes[5]].Roads[0] = roadNorthWest.ID;
+
+						roadWest.Nodes[0] = tile.Nodes[5];
+						roadWest.Nodes[1] = tile.Nodes[4];
+
+						roadSouthWest.Nodes[0] = tile.Nodes[4];
+					}
+					else if (x == Width - 1){
+						Road roadEast = new Road(roadID++);
+						tile.Roads[1] = roadEast.ID;
+
+						Nodes[tile.Nodes[1]].Roads[1] = roadEast.ID;
+
+					}
+
+
+					Nodes[tile.Nodes[0]].Roads[1] = roadNorthEast.ID;
+					Nodes[tile.Nodes[0]].Roads[2] = roadNorthWest.ID;
+
+					Nodes[tile.Nodes[1]].Roads[2] = roadNorthEast.ID;
+
+					if (x > 0){
+						Nodes[Tiles[tile.ID - 2].Nodes[5]].Roads[0] = roadNorthEast.ID;
+					}
+				}
+				else{ }
+
+				#endregion
 
 				Tiles[y * Width + x] = tile;
 			}
@@ -163,5 +211,13 @@ public class Game{
 
 		output = JsonSerializer.Serialize(Nodes, new JsonSerializerOptions { WriteIndented = true });
 		File.WriteAllText("Nodes.json", output);
+
+		int roadErrors = -2;	//-2 Da eine NodeID 0 ist und sie kann 2 Roads haben
+		for (int i = 0; i < Roads.Length; i++){
+			if (Roads[i].Nodes[0] == 0)
+				roadErrors++;
+			if(Roads[i].Nodes[1] == 0)
+				roadErrors++;
+		}
 	}
 }

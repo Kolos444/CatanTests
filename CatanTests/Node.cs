@@ -18,5 +18,8 @@ public class Node{
 	/// </summary>
 	public int[] Tiles { get; }
 
+	/// <summary>
+	/// Von Oben im Uhrzeigersinn 0 - 2
+	/// </summary>
 	public int[] Roads { get; }
 }
