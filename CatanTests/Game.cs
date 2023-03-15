@@ -8,9 +8,12 @@ public class Game{
 		Height = height;
 
 		Tiles = new Tile[width * height];
+
 		Nodes = new Node[Width * 2 * Height + Height * 2];
 
-		int test = Width * 2 * Height + Height * 2;
+		Roads = new Road[(3 * Width + 2) * Height + 2 * Width - 1];
+
+		int test = (3 * Width + 2) * Height + 2 * Width - 1;
 	}
 
 	public Tile[] Tiles  { get; }
@@ -153,56 +156,117 @@ public class Game{
 
 				#endregion
 
+
+				Tiles[y * Width + x] = tile;
+			}
+		}
+
+		for (int y = 0; y < Height; y++){
+			for (int x = 0; x < Width; x++){
+
+				Tile tile = Tiles[y * Height + x];
+
 				#region Straßen generierung
 
 				if (y % 2 == 0){
-					Road roadWest = new Road(roadID++);
-					tile.Roads[4] = roadWest.ID;
+					Road roadWest = new Road(roadID++) {
+						Nodes = {
+							[0] = tile.Nodes[5],
+							[1] = tile.Nodes[4]
+						}
+					};
+					Roads[roadWest.ID] = roadWest;
+					tile.Roads[4]      = roadWest.ID;
 
-					Road roadNorthWest = new Road(roadID++);
-					tile.Roads[5] = roadNorthWest.ID;
-					Road roadNorthEast = new Road(roadID++);
-					tile.Roads[0] = roadNorthEast.ID;
+					Nodes[roadWest.Nodes[0]].Roads[1] = roadWest.ID;
+					Nodes[roadWest.Nodes[1]].Roads[0] = roadWest.ID;
+
+					Road roadNorthWest = new Road(roadID++) {
+						Nodes = {
+							[0] = tile.Nodes[0],
+							[1] = tile.Nodes[5]
+						}
+					};
+					Roads[roadNorthWest.ID] = roadNorthWest;
+					tile.Roads[5]           = roadNorthWest.ID;
+
+					Nodes[roadNorthWest.Nodes[0]].Roads[2] = roadNorthWest.ID;
+					Nodes[roadNorthWest.Nodes[1]].Roads[0] = roadNorthWest.ID;
+
+
+					Road roadNorthEast = new Road(roadID++) {
+						Nodes = {
+							[0] = tile.Nodes[0],
+							[1] = tile.Nodes[1]
+						}
+					};
+					Roads[roadNorthEast.ID] = roadNorthEast;
+					tile.Roads[0]           = roadNorthEast.ID;
+
+					Nodes[roadNorthEast.Nodes[0]].Roads[1] = roadNorthEast.ID;
+					Nodes[roadNorthEast.Nodes[1]].Roads[0] = roadNorthEast.ID;
 
 
 					if (x == 0){
-						Road roadSouthWest = new Road(roadID++);
-						tile.Roads[3] = roadSouthWest.ID;
+						Road roadSouthWest = new Road(roadID++) {
+							Nodes = {
+								[0] = tile.Nodes[4],
+								[1] = tile.Nodes[3]
+							}
+						};
+						Roads[roadSouthWest.ID] = roadSouthWest;
+						tile.Roads[3]           = roadSouthWest.ID;
 
-						Nodes[tile.Nodes[4]].Roads[1] = roadSouthWest.ID;
-						Nodes[tile.Nodes[4]].Roads[0] = roadWest.ID;
-
-						Nodes[tile.Nodes[5]].Roads[1] = roadWest.ID;
-						Nodes[tile.Nodes[5]].Roads[0] = roadNorthWest.ID;
-
-						roadWest.Nodes[0] = tile.Nodes[5];
-						roadWest.Nodes[1] = tile.Nodes[4];
-
-						roadSouthWest.Nodes[0] = tile.Nodes[4];
+						Nodes[roadSouthWest.Nodes[0]].Roads[1] = roadSouthWest.ID;
+						Nodes[roadSouthWest.Nodes[1]].Roads[2] = roadSouthWest.ID;
 					}
 					else if (x == Width - 1){
-						Road roadEast = new Road(roadID++);
-						tile.Roads[1] = roadEast.ID;
+						Road roadEast = new Road(roadID++) {
+							Nodes = {
+								[0] = tile.Nodes[1],
+								[1] = tile.Nodes[2]
+							}
+						};
+						Roads[roadEast.ID] = roadEast;
+						tile.Roads[1]      = roadEast.ID;
 
-						Nodes[tile.Nodes[1]].Roads[1] = roadEast.ID;
-
+						Nodes[roadEast.Nodes[0]].Roads[1] = roadEast.ID;
+						Nodes[roadEast.Nodes[1]].Roads[0] = roadEast.ID;
 					}
 
+					//Wenn es die letzte Reihe ist
+					if (y == Height - 1){
+						//Wenn es nicht das erste in der Reihe ist
+						if (x > 0){
+							Road roadSouthWest = new Road(roadID++) {
+								Nodes = {
+									[0] = tile.Nodes[4],
+									[1] = tile.Nodes[3]
+								}
+							};
+							Roads[roadSouthWest.ID] = roadSouthWest;
+							tile.Roads[3]           = roadSouthWest.ID;
 
-					Nodes[tile.Nodes[0]].Roads[1] = roadNorthEast.ID;
-					Nodes[tile.Nodes[0]].Roads[2] = roadNorthWest.ID;
+							Nodes[roadSouthWest.Nodes[0]].Roads[1] = roadSouthWest.ID;
+							Nodes[roadSouthWest.Nodes[1]].Roads[2] = roadSouthWest.ID;
+						}
 
-					Nodes[tile.Nodes[1]].Roads[2] = roadNorthEast.ID;
+						Road roadSouthEast = new Road(roadID++) {
+							Nodes = {
+								[0] = tile.Nodes[2],
+								[1] = tile.Nodes[3]
+							}
+						};
+						Roads[roadSouthEast.ID] = roadSouthEast;
+						tile.Roads[2]           = roadSouthEast.ID;
 
-					if (x > 0){
-						Nodes[Tiles[tile.ID - 2].Nodes[5]].Roads[0] = roadNorthEast.ID;
+						Nodes[roadSouthEast.Nodes[0]].Roads[2] = roadSouthEast.ID;
+						Nodes[roadSouthEast.Nodes[1]].Roads[0] = roadSouthEast.ID;
 					}
 				}
 				else{ }
 
 				#endregion
-
-				Tiles[y * Width + x] = tile;
 			}
 		}
 
@@ -212,11 +276,14 @@ public class Game{
 		output = JsonSerializer.Serialize(Nodes, new JsonSerializerOptions { WriteIndented = true });
 		File.WriteAllText("Nodes.json", output);
 
-		int roadErrors = -2;	//-2 Da eine NodeID 0 ist und sie kann 2 Roads haben
+		output = JsonSerializer.Serialize(Roads, new JsonSerializerOptions { WriteIndented = true });
+		File.WriteAllText("Roads.json", output);
+
+		int roadErrors = -2; //-2 Da eine NodeID 0 ist und sie kann 2 Roads haben
 		for (int i = 0; i < Roads.Length; i++){
 			if (Roads[i].Nodes[0] == 0)
 				roadErrors++;
-			if(Roads[i].Nodes[1] == 0)
+			if (Roads[i].Nodes[1] == 0)
 				roadErrors++;
 		}
 	}
