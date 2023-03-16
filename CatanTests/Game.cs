@@ -134,7 +134,7 @@ public class Game{
 
 						//Wenn es nicht das letzte in der Reihe ist
 						if (x > 0)
-							nodeSouthEast.Tiles[2] = tile.ID - 1;
+							tile.Nodes[4] = Tiles[tile.ID-2].Nodes[2];
 
 						Nodes[nodeSouth.ID]     = nodeSouth;
 						Nodes[nodeSouthEast.ID] = nodeSouthEast;
