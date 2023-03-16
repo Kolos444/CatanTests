@@ -299,7 +299,6 @@ public class Game{
 					#region Untere Roads beim letzten Durchlauf
 
 					if (y == Height - 1){
-
 						//Wenn es nicht das Erste in der Reihe ist
 						if (x > 0){
 							Road southWest = new Road(roadID++) {
@@ -386,6 +385,36 @@ public class Game{
 					//Wenn es nicht das letzte in der Reihe ist
 					if (x < Width - 1)
 						Tiles[tile.ID - Width].Roads[3] = northEast.ID;
+
+					#endregion
+
+					#region Untere Roads zuweisen wenn es der Letzte Durchlauf ist
+
+					if (y == Height - 1){
+						Road southWest = new Road(roadID++) {
+							Nodes = {
+								[0] = tile.Nodes[4],
+								[1] = tile.Nodes[3]
+							}
+						};
+
+						tile.Roads[3] = southWest.ID;
+
+						Roads[southWest.ID] = southWest;
+
+						//Wenn es nicht das Letzte in der Reihe ist
+						if (x < Width - 1){
+							Road southEast = new Road(roadID++) {
+								Nodes = {
+									[0] = tile.Nodes[2],
+									[1] = tile.Nodes[3]
+								}
+							};
+							tile.Roads[2] = southEast.ID;
+
+							Roads[southEast.ID] = southEast;
+						}
+					}
 
 					#endregion
 				}
