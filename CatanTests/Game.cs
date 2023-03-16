@@ -156,7 +156,7 @@ public class Game{
 					Tiles[tile.ID - Width - 1].Nodes[2]  = nodeNorth.ID;
 					Tiles[tile.ID - Width - 1].Nodes[3] = nodeNorthWest.ID;
 					if (x < Width - 1)
-						Tiles[tile.ID - 10].Nodes[4] = nodeNorth.ID;
+						Tiles[tile.ID - Width].Nodes[4] = nodeNorth.ID;
 
 					if (x > 0){
 						nodeNorthWest.Tiles[2]      = tile.ID - 1; //Unten links
