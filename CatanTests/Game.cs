@@ -113,10 +113,10 @@ public class Game{
 							nodeNorth.Tiles[2] = Tiles[tile.ID - Width - 2].ID; //Oben links
 						}
 
-						Tiles[tile.ID - 11].Nodes[3] = nodeNorthEast.ID;
-						Tiles[tile.ID - 11].Nodes[4] = nodeNorth.ID;
+						Tiles[tile.ID - Width - 1].Nodes[3] = nodeNorthEast.ID;
+						Tiles[tile.ID - Width - 1].Nodes[4] = nodeNorth.ID;
 
-						Tiles[tile.ID - 12].Nodes[2] = nodeNorth.ID;
+						Tiles[tile.ID - Width - 2].Nodes[2] = nodeNorth.ID;
 					}
 
 					Nodes[nodeNorth.ID]     = nodeNorth;
@@ -153,8 +153,8 @@ public class Game{
 					tile.Nodes[5] = nodeNorthWest.ID;
 
 
-					Tiles[tile.ID - 11].Nodes[2] = nodeNorth.ID;
-					Tiles[tile.ID - 11].Nodes[3] = nodeNorthWest.ID;
+					Tiles[tile.ID - Width - 1].Nodes[2]  = nodeNorth.ID;
+					Tiles[tile.ID - Width - 1].Nodes[3] = nodeNorthWest.ID;
 					if (x < Width - 1)
 						Tiles[tile.ID - 10].Nodes[4] = nodeNorth.ID;
 
