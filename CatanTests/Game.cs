@@ -219,7 +219,7 @@ public class Game{
 
 		for (int y = 0; y < Height; y++){
 			for (int x = 0; x < Width; x++){
-				Tile tile = Tiles[y * Height + x];
+				Tile tile = Tiles[y * Width + x];
 
 				#region Straßen generierung
 
