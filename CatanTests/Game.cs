@@ -11,9 +11,9 @@ public class Game{
 
 		Nodes = new Node[Width * 2 * Height + Height * 2 + Width * 2];
 
-		Roads = new Road[(3 * Width + 2) * Height + 2 * Width - 1];
+		Roads = new Road[3 * Width * Height + 2 * Height + Width * 2 - 1];
 
-		int test = (3 * Width + 2) * Height + 2 * Width - 1;
+		int test = 3 * Width * Height + 2 * Height + Width * 2 - 1;
 	}
 
 	public Tile[] Tiles  { get; }
@@ -320,9 +320,9 @@ public class Game{
 							}
 						};
 
-						tile.Roads[2] = northEast.ID;
+						tile.Roads[2] = southEast.ID;
 
-						Roads[northEast.ID] = northEast;
+						Roads[southEast.ID] = southEast;
 					}
 
 					#endregion
@@ -390,6 +390,9 @@ public class Game{
 
 					#region Untere Roads zuweisen wenn es der Letzte Durchlauf ist
 
+					if (roadID>= 70){
+						Console.Out.WriteLine("test");
+					}
 					if (y == Height - 1){
 						Road southWest = new Road(roadID++) {
 							Nodes = {
